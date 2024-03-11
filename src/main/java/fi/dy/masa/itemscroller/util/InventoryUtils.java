@@ -36,6 +36,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.Generic3x3ContainerScreenHandler;
@@ -1299,7 +1300,7 @@ public class InventoryUtils {
         }
     }
 
-    public static Optional<CraftingRecipe> getRecipeFromPattern(RecipePattern recipe) {
+    public static Optional<RecipeEntry<CraftingRecipe>> getRecipeFromPattern(RecipePattern recipe) {
         MinecraftClient mc = MinecraftClient.getInstance();
 
         // Creates dummy inventories/containers.. probs a better way
@@ -1317,12 +1318,12 @@ public class InventoryUtils {
         return recipeManager.getFirstMatch(RecipeType.CRAFTING, search, mc.world);
     }
 
-    public static CraftingRecipe getBookRecipeFromPattern(RecipePattern recipe) {
+    public static RecipeEntry<CraftingRecipe> getBookRecipeFromPattern(RecipePattern recipe) {
         if (recipe.cachedRecipeFromBook != null) // Check if recipe is already cached (kindof unnecessary)
         {
             return recipe.cachedRecipeFromBook;
         } else {
-            Optional<CraftingRecipe> optional = getRecipeFromPattern(recipe); // get book recipe if cache not found
+            Optional<RecipeEntry<CraftingRecipe>> optional = getRecipeFromPattern(recipe); // get book recipe if cache not found
 
             if (optional.isPresent()) {
                 recipe.cachedRecipeFromBook = optional.get();
@@ -1343,8 +1344,9 @@ public class InventoryUtils {
             if (range != null) {
 
                 for (int i = 0; i < 36; i++) {
-                    CraftingRecipe bookRecipe = getBookRecipeFromPattern(recipe);
-                    if (bookRecipe != null && !bookRecipe.isIgnoredInRecipeBook()) { // Use recipe book if possible
+                    RecipeEntry<CraftingRecipe> bookRecipe = getBookRecipeFromPattern(recipe);
+                    CraftingRecipe bookRecipeHandler = bookRecipe.value();
+                    if (bookRecipe != null && !bookRecipeHandler.isIgnoredInRecipeBook()) { // Use recipe book if possible
                         MinecraftClient mc = MinecraftClient.getInstance();
                         mc.interactionManager.clickRecipe(gui.getScreenHandler().syncId, bookRecipe, true);
                     } else {

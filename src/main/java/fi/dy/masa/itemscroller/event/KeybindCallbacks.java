@@ -5,6 +5,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.screen.slot.Slot;
 import fi.dy.masa.malilib.config.options.ConfigHotkey;
 import fi.dy.masa.malilib.gui.GuiBase;
@@ -158,8 +159,9 @@ public class KeybindCallbacks implements IHotkeyCallback, IClientTickHandler {
             if (outputSlot != null) {
                 RecipePattern recipe = RecipeStorage.getInstance().getSelectedRecipe();
 
-                CraftingRecipe bookRecipe = InventoryUtils.getBookRecipeFromPattern(recipe);
-                if (bookRecipe != null && !bookRecipe.isIgnoredInRecipeBook()) { // Use recipe book if possible
+                RecipeEntry<CraftingRecipe> bookRecipe = InventoryUtils.getBookRecipeFromPattern(recipe);
+                CraftingRecipe bookRecipeHandler = bookRecipe.value();
+                if (bookRecipe != null && !bookRecipeHandler.isIgnoredInRecipeBook()) { // Use recipe book if possible
                     // System.out.println("recipe");
                     mc.interactionManager.clickRecipe(gui.getScreenHandler().syncId, bookRecipe, true);
                 } else {

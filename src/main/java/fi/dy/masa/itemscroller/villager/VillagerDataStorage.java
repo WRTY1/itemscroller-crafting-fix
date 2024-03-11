@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtTagSizeTracker;
 import net.minecraft.screen.MerchantScreenHandler;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
@@ -214,7 +215,8 @@ public class VillagerDataStorage
             if (file.exists() && file.isFile() && file.canRead())
             {
                 FileInputStream is = new FileInputStream(file);
-                this.readFromNBT(NbtIo.readCompressed(is));
+                //this.readFromNBT(NbtIo.readCompressed(is));
+                this.readFromNBT(NbtIo.readCompressed(is, NbtTagSizeTracker.ofUnlimitedBytes()));
                 is.close();
             }
         }
