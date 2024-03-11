@@ -22,7 +22,9 @@ public class RecipePattern
 {
     private ItemStack result = InventoryUtils.EMPTY_STACK;
     private ItemStack[] recipe = new ItemStack[9];
-    public RecipeEntry<CraftingRecipe> cachedRecipeFromBook = null;
+    public CraftingRecipe cachedRecipeFromBook = null;
+    public RecipeEntry<CraftingRecipe> cachedRecipeEntryFromBook = null;
+
     private int maxCraftAmount = 64;
     private HashSet<Item> recipeRemainders = new HashSet<Item>();
 
